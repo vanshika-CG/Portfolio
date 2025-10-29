@@ -1,7 +1,7 @@
 // src/context/ThemeContext.tsx
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 
-type Theme = "nebula" | "violet" | "cosmic" | "amethyst";
+type Theme = "light" | "dark" | "ocean" | "sunset";
 
 interface ThemeContextValue {
   theme: Theme;
@@ -11,12 +11,12 @@ interface ThemeContextValue {
 const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
-  const [theme, setThemeState] = useState<Theme>("nebula");
+  const [theme, setThemeState] = useState<Theme>("light");
 
   // Load from localStorage
   useEffect(() => {
     const saved = localStorage.getItem("site-theme") as Theme | null;
-    if (saved && ["nebula", "violet", "cosmic", "amethyst"].includes(saved)) {
+    if (saved && ["light", "dark", "ocean", "sunset"].includes(saved)) {
       setThemeState(saved);
     }
   }, []);

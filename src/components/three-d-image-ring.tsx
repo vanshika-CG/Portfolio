@@ -95,6 +95,19 @@ export function ThreeDImageRing({
     return `${-(parallaxOffset / 1.5)}px 0px`;
   };
 
+  // Calculate blur amount based on distance from active index
+  const getBlurAmount = (imageIndex: number, currentActiveIndex: number) => {
+    const totalImages = images.length;
+    // Calculate the shortest distance around the circular ring
+    let distance = Math.abs(imageIndex - currentActiveIndex);
+    if (distance > totalImages / 2) {
+      distance = totalImages - distance;
+    }
+    // Apply blur: 0px for active, gradually increase for side images
+    // Max blur of 8px for images that are 2+ positions away
+    return Math.min(distance * 4, 8);
+  };
+
   const calculateActiveIndex = (latestRotation: number) => {
     const normalizedRotation = ((latestRotation % 360) + 360) % 360;
     let index = Math.round((360 - normalizedRotation) / angle) % images.length;
@@ -105,12 +118,17 @@ export function ThreeDImageRing({
   useEffect(() => {
     const unsubscribe = rotationY.on("change", (latestRotation) => {
       if (ringRef.current) {
+        const newIndex = calculateActiveIndex(latestRotation);
         Array.from(ringRef.current.children).forEach((imgElement, i) => {
-          (imgElement as HTMLElement).style.backgroundPosition = getBgPos(
+          const element = imgElement as HTMLElement;
+          element.style.backgroundPosition = getBgPos(
             i,
             latestRotation,
             currentScale
           );
+          // Apply blur based on distance from active image
+          const blurAmount = getBlurAmount(i, newIndex);
+          element.style.filter = `blur(${blurAmount}px)`;
         });
       }
       currentRotationY.current = latestRotation;
@@ -249,7 +267,7 @@ export function ThreeDImageRing({
               <motion.div
                 key={index}
                 className={cn(
-                  "absolute transition-shadow duration-300",
+                  "absolute transition-all duration-300",
                   index === activeIndex ? "ring-4 ring-accent/70 shadow-2xl shadow-accent/50" : "",
                   imageClassName
                 )}
@@ -265,6 +283,8 @@ export function ThreeDImageRing({
                   z: -imageDistance * currentScale,
                   transformOrigin: `50% 50% ${imageDistance * currentScale}px`,
                   backgroundPosition: getBgPos(index, rotationY.get(), currentScale),
+                  filter: `blur(${getBlurAmount(index, activeIndex)}px)`,
+                  transition: "filter 0.3s ease-out",
                 }}
                 initial="hidden"
                 animate="visible"

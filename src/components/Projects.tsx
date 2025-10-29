@@ -3,9 +3,10 @@
 import React, { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ExternalLink, Github, Grid3X3, List, Orbit, Zap } from "lucide-react"; 
+import { ExternalLink, Github, Grid3X3, List, Orbit, Zap, LayoutGrid } from "lucide-react"; 
 import { ThreeDImageRing } from "@/components/three-d-image-ring"; 
-import { Badge } from "@/components/ui/badge"; 
+import { ThreeDCarousel } from "@/components/ThreeDCarousel";
+import { Badge } from "@/components/ui/badge";
 
 // Define a type for your project structure for better type safety
 interface Project {
@@ -18,7 +19,7 @@ interface Project {
   image: string; // The image URL
 }
 
-type ProjectViewMode = "RING" | "GRID" | "LIST"; 
+type ProjectViewMode = "RING" | "CAROUSEL" | "GRID" | "LIST";
 
 // --- Ring Info Card (NEW: Used ONLY for the 3D Ring View) ---
 
@@ -212,7 +213,17 @@ const ProjectViewSelector: React.FC<{
       title="3D Ring View"
     >
       <Orbit className="w-4 h-4" />
-      <span className="ml-2 hidden sm:inline">3D Ring</span>
+      <span className="ml-2 hidden sm:inline">Ring</span>
+    </Button>
+    <Button
+      variant={currentMode === "CAROUSEL" ? "default" : "ghost"}
+      onClick={() => setMode("CAROUSEL")}
+      className={currentMode === "CAROUSEL" ? "bg-accent hover:bg-accent/80 text-background" : "text-muted-foreground hover:bg-accent/20"}
+      size="sm"
+      title="3D Carousel View"
+    >
+      <LayoutGrid className="w-4 h-4" />
+      <span className="ml-2 hidden sm:inline">3D</span>
     </Button>
     <Button
       variant={currentMode === "GRID" ? "default" : "ghost"}
@@ -330,6 +341,10 @@ const Projects = () => {
                       )}
                     </div>
                 </div>
+            )}
+
+            {viewMode === "CAROUSEL" && (
+                <ThreeDCarousel projects={allProjects} autoRotate={false} />
             )}
 
             {viewMode === "GRID" && (

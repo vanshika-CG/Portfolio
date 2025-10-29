@@ -314,24 +314,25 @@ const Navigation = () => {
             </div>
 
             {/* THEME PICKER */}
-            <h4 className="text-lg font-semibold text-lavender mb-3">Choose Site Theme</h4>
-            <div className="grid grid-cols-2 gap-3">
-              {(["light", "dark", "ocean", "sunset"] as const).map((t) => (
-                <button
-                  key={t}
-                  onClick={() => setTheme(t)}
-                  className={`
-                    capitalize p-3 rounded-xl transition-all font-medium
-                    ${theme === t
-                      ? "bg-lavender/30 ring-2 ring-lavender text-white"
-                      : "bg-white/10 hover:bg-white/20 text-gray-300"
-                    }
-                  `}
-                >
-                  {t}
-                </button>
-              ))}
-            </div>
+         // Inside the Theme Picker section
+<h4 className="text-lg font-semibold text-lavender mb-3">Choose Site Theme</h4>
+<div className="grid grid-cols-2 gap-3">
+  {(["light", "dark", "ocean", "sunset"] as const).map((t) => (
+    <button
+      key={t}
+      onClick={() => setTheme(t)}
+      className={`
+        capitalize p-3 rounded-xl transition-all font-medium
+        ${theme === t
+          ? "bg-lavender/30 ring-2 ring-lavender text-white"
+          : "bg-white/10 hover:bg-white/20 text-gray-300"
+        }
+      `}
+    >
+      {t}
+    </button>
+  ))}
+</div>
 
             <p className="text-xs text-center text-gray-400 mt-10">
               © {new Date().getFullYear()} {profileData.name}. UI crafted with **React & Tailwind**.
