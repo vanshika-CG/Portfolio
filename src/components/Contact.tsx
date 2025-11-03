@@ -6,6 +6,8 @@ import { useToast } from "@/hooks/use-toast";
 import React from 'react';
 import Lottie from 'lottie-react';
 import robotAnimation from './../../public/animation/Robot says hello.json';
+import { motion } from 'framer-motion';
+import { Send, Mail, User, MessageSquare } from 'lucide-react';
 
 // --- NEW GreetingRobot Component ---
 const GreetingRobot = () => {
@@ -89,81 +91,273 @@ const Contact = () => {
     email: "",
     message: "",
   });
+  const [focusedField, setFocusedField] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // In a real application, send formData to a backend endpoint here.
+    setIsSubmitting(true);
+    
+    // Simulate sending
+    await new Promise(resolve => setTimeout(resolve, 1000));
     
     toast({
       title: "Message sent! 🚀",
       description: "Thank you for reaching out. I'll get back to you soon!",
     });
+    
     setFormData({ name: "", email: "", message: "" });
+    setIsSubmitting(false);
   };
 
   return (
-    <section id="contact" className="py-24 px-4 relative">
+    <section id="contact" className="py-24 px-4 relative overflow-hidden">
       <div className="absolute inset-0 gradient-nebula-radial opacity-20"></div>
       
-      <div className="max-w-4xl mx-auto relative z-10">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-heading font-bold mb-4">
+      {/* Animated background particles */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {[...Array(20)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-1 h-1 bg-purple-500/30 rounded-full"
+            initial={{ 
+              x: Math.random() * window.innerWidth, 
+              y: Math.random() * window.innerHeight,
+              scale: Math.random() * 0.5 + 0.5
+            }}
+            animate={{
+              y: [null, Math.random() * window.innerHeight],
+              x: [null, Math.random() * window.innerWidth],
+              opacity: [0, 1, 0],
+            }}
+            transition={{
+              duration: Math.random() * 10 + 10,
+              repeat: Infinity,
+              ease: "linear"
+            }}
+          />
+        ))}
+      </div>
+      
+      <div className="max-w-6xl mx-auto relative z-10">
+        <motion.div 
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: -30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          <h2 className="text-4xl md:text-6xl font-heading font-bold mb-4">
             Get in <span className="gradient-text">Touch</span>
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
             Let's create something amazing together. Reach out and let's discuss your next project.
           </p>
-        </div>
+        </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-12 items-stretch"> {/* Added items-stretch to make columns equal height */}
+        <div className="grid md:grid-cols-2 gap-12 items-stretch">
           
           {/* LEFT COLUMN: Contact Form */}
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <h3 className="text-2xl font-heading font-semibold mb-6">
-              Send Vanshika a <span className="gradient-text">Message</span>
-            </h3>
+          <motion.div
+            className="relative p-8 rounded-2xl"
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            {/* Animated gradient border */}
+            <motion.div
+              className="absolute inset-0 rounded-2xl opacity-75"
+              style={{
+                background: 'linear-gradient(90deg, #8b5cf6, #ec4899, #3b82f6, #8b5cf6)',
+                backgroundSize: '300% 300%',
+                padding: '2px',
+                WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+                WebkitMaskComposite: 'xor',
+                maskComposite: 'exclude',
+              }}
+              animate={{
+                backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
+              }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: 'linear',
+              }}
+            />
             
-            <div>
-              <Input
-                placeholder="Your Name"
-                value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                required
-                className="glass-effect border-accent/30 focus:border-accent"
-              />
-            </div>
-            <div>
-              <Input
-                type="email"
-                placeholder="Your Email"
-                value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                required
-                className="glass-effect border-accent/30 focus:border-accent"
-              />
-            </div>
-            <div>
-              <Textarea
-                placeholder="Your Project Idea / Inquiry"
-                value={formData.message}
-                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                required
-                rows={7}
-                className="glass-effect border-accent/30 focus:border-accent resize-none"
-              />
-            </div>
-            <Button
-              type="submit"
-              className="w-full gradient-nebula hover:opacity-90 transition-opacity glow-effect"
-              size="lg"
+            {/* Inner glow effect */}
+            <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-purple-500/10 via-transparent to-blue-500/10 pointer-events-none" />
+            
+            <motion.form 
+              onSubmit={handleSubmit} 
+              className="space-y-6 relative z-10"
             >
-              Send Message
-            </Button>
-          </form>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3 }}
+            >
+              <h3 className="text-3xl font-heading font-semibold mb-8 flex items-center gap-3">
+                <MessageSquare className="w-8 h-8 text-purple-500" />
+                Send Vanshika a <span className="gradient-text ml-2">Message</span>
+              </h3>
+            </motion.div>
+            
+            {/* Name Field */}
+            <motion.div
+              className="relative group"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.4 }}
+            >
+              <div className="relative">
+                <User className={`absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 transition-colors duration-300 z-10 ${
+                  focusedField === 'name' ? 'text-purple-400' : 'text-muted-foreground'
+                }`} />
+                <Input
+                  placeholder="Your Name"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  onFocus={() => setFocusedField('name')}
+                  onBlur={() => setFocusedField(null)}
+                  required
+                  className="glass-effect border-accent/30 focus:border-purple-500 pl-11 h-12 transition-all duration-300 hover:border-purple-400/50"
+                />
+                {focusedField === 'name' && (
+                  <motion.div
+                    layoutId="inputHighlight"
+                    className="absolute inset-0 border-2 border-purple-500 rounded-md pointer-events-none"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                  />
+                )}
+              </div>
+            </motion.div>
+
+            {/* Email Field */}
+            <motion.div
+              className="relative group"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.5 }}
+            >
+              <div className="relative">
+                <Mail className={`absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 transition-colors duration-300 z-10 ${
+                  focusedField === 'email' ? 'text-purple-400' : 'text-muted-foreground'
+                }`} />
+                <Input
+                  type="email"
+                  placeholder="Your Email"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  onFocus={() => setFocusedField('email')}
+                  onBlur={() => setFocusedField(null)}
+                  required
+                  className="glass-effect border-accent/30 focus:border-purple-500 pl-11 h-12 transition-all duration-300 hover:border-purple-400/50"
+                />
+                {focusedField === 'email' && (
+                  <motion.div
+                    layoutId="inputHighlight"
+                    className="absolute inset-0 border-2 border-purple-500 rounded-md pointer-events-none"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                  />
+                )}
+              </div>
+            </motion.div>
+
+            {/* Message Field */}
+            <motion.div
+              className="relative group"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.6 }}
+            >
+              <div className="relative">
+                <Textarea
+                  placeholder="Your Project Idea / Inquiry"
+                  value={formData.message}
+                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  onFocus={() => setFocusedField('message')}
+                  onBlur={() => setFocusedField(null)}
+                  required
+                  rows={7}
+                  className="glass-effect border-accent/30 focus:border-purple-500 resize-none transition-all duration-300 hover:border-purple-400/50"
+                />
+                {focusedField === 'message' && (
+                  <motion.div
+                    layoutId="inputHighlight"
+                    className="absolute inset-0 border-2 border-purple-500 rounded-md pointer-events-none"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                  />
+                )}
+              </div>
+            </motion.div>
+
+            {/* Submit Button */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.7 }}
+            >
+              <Button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full gradient-nebula hover:opacity-90 transition-all duration-300 glow-effect h-12 text-lg group relative overflow-hidden"
+                size="lg"
+              >
+                <motion.span 
+                  className="flex items-center justify-center gap-2"
+                  animate={isSubmitting ? { opacity: 0.7 } : { opacity: 1 }}
+                >
+                  {isSubmitting ? (
+                    <>
+                      <motion.div
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                      >
+                        <Send className="w-5 h-5" />
+                      </motion.div>
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      Send Message
+                      <motion.div
+                        className="inline-block"
+                        whileHover={{ x: 5 }}
+                        transition={{ type: "spring", stiffness: 400 }}
+                      >
+                        <Send className="w-5 h-5" />
+                      </motion.div>
+                    </>
+                  )}
+                </motion.span>
+              </Button>
+            </motion.div>
+          </motion.form>
+          </motion.div>
 
           {/* RIGHT COLUMN: Greeting Robot */}
-          <GreetingRobot />
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+          >
+            <GreetingRobot />
+          </motion.div>
           
         </div>
       </div>
