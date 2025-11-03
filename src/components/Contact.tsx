@@ -1,9 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useState, useEffect } from "react"; // Added useEffect for potential robot animation/speech
+import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import React from 'react';
+import Lottie from 'lottie-react';
+import robotAnimation from './../../public/animation/Robot says hello.json';
 
 // --- NEW GreetingRobot Component ---
 const GreetingRobot = () => {
@@ -42,24 +44,22 @@ const GreetingRobot = () => {
       {/* Background radial gradient for subtle effect */}
       <div className="absolute inset-0 bg-gradient-radial from-purple-800/30 to-transparent opacity-50 z-0 animate-fade-in-slow"></div>
 
-      {/* --- PLACEHOLDER FOR 3D ROBOT ANIMATION --- */}
-      {/* This is where you would integrate a 3D library like @react-three/fiber */}
-      {/* For now, it's a styled div, but imagine a realistic, moving robot model here! */}
+      {/* Lottie Robot Animation */}
       <div 
-        className={`w-64 h-64 bg-gradient-to-br from-purple-500 to-indigo-700 rounded-full flex items-center justify-center mb-6 
-                    border-4 border-purple-400 shadow-lg relative z-10 transition-transform duration-500 
-                    ${isSpeaking ? 'scale-105 animate-pulse-slight' : 'scale-100'}`}
+        className={`w-80 h-80 flex items-center justify-center mb-6 relative z-10 transition-transform duration-500 
+                    ${isSpeaking ? 'scale-105' : 'scale-100'}`}
         style={{
-          // For a real 3D model, this div would be your Canvas component
-          // e.g., <Canvas><RobotModel /></Canvas>
           transform: isSpeaking ? 'scale(1.05) translateY(-5px)' : 'scale(1) translateY(0)',
-          boxShadow: isSpeaking ? '0 0 40px rgba(139, 92, 246, 0.7)' : '0 0 20px rgba(139, 92, 246, 0.4)'
+          filter: isSpeaking ? 'drop-shadow(0 0 40px rgba(139, 92, 246, 0.7))' : 'drop-shadow(0 0 20px rgba(139, 92, 246, 0.4))'
         }}
       >
-        {/* Replace with your 3D robot model or a complex SVG animation */}
-        <span className="text-8xl text-white drop-shadow-lg pointer-events-none">🤖</span>
+        <Lottie 
+          animationData={robotAnimation} 
+          loop={true}
+          autoplay={true}
+          style={{ width: '100%', height: '100%' }}
+        />
       </div>
-      {/* --- END 3D ROBOT PLACEHOLDER --- */}
 
       <h3 className="text-4xl md:text-5xl font-heading font-bold mb-4 text-white relative z-10">
         <span className={`transition-colors duration-300 ${isSpeaking ? 'text-cyan-400' : 'text-white'}`}>
