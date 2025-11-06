@@ -10,10 +10,15 @@ import Footer from "@/components/Footer";
 import CustomCursor from "@/components/CustomCursor";
 import ScrollProgressBar from "@/components/ScrollProgressBar";
 import AnimatedSection from "@/components/AnimatedSection";
+// ⭐️ NEW IMPORT
+import ScrollSlideRobot from "@/components/ScrollSlideRobot"; 
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
+      {/* ⭐️ ADD THE NEW COMPONENT HERE AS A FIXED OVERLAY */}
+      <ScrollSlideRobot />
+      
       <ScrollProgressBar />
       <CustomCursor />
       <Navigation />
