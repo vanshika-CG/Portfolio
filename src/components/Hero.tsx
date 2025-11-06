@@ -43,47 +43,21 @@ const Hero = () => {
           vision of crafting impactful and user-centric experiences.
         </p>
 
-        {/* CTA Buttons – wrapped in GlareHover */}
+        {/* CTA Buttons – glare now applied by shared Button */}
         <div className="flex gap-4">
-          <GlareHover
-            width="auto"
-            height="auto"
-            background="transparent"
-            borderRadius="8px"
-            borderColor="transparent"
-            glareColor="#ffffff"
-            glareOpacity={0.3}
-            glareSize={200}
-            transitionDuration={500}
-            className="inline-flex"
+          <Button
+            className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
+            onClick={scrollToContact}
           >
-            <Button
-              className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
-              onClick={scrollToContact}
-            >
-              Let's Connect
-            </Button>
-          </GlareHover>
+            Let's Connect
+          </Button>
 
-          <GlareHover
-            width="auto"
-            height="auto"
-            background="transparent"
-            borderRadius="8px"
-            borderColor="transparent"
-            glareColor="#ffffff"
-            glareOpacity={0.3}
-            glareSize={200}
-            transitionDuration={500}
-            className="inline-flex"
+          <Button
+            variant="outline"
+            className="border-lavender text-lavender hover:bg-lavender/10 font-semibold"
           >
-            <Button
-              variant="outline"
-              className="border-lavender text-lavender hover:bg-lavender/10 font-semibold"
-            >
-              Download CV
-            </Button>
-          </GlareHover>
+            Download CV
+          </Button>
         </div>
       </div>
 

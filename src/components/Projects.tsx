@@ -7,6 +7,7 @@ import { ExternalLink, Github, Grid3X3, List, Orbit, Zap, LayoutGrid } from "luc
 import { ThreeDImageRing } from "@/components/three-d-image-ring"; 
 import { ThreeDCarousel } from "@/components/ThreeDCarousel";
 import { Badge } from "@/components/ui/badge";
+import GlareHover from "@/components/GlareHover";
 
 // Define a type for your project structure for better type safety
 interface Project {
@@ -24,157 +25,196 @@ type ProjectViewMode = "RING" | "CAROUSEL" | "GRID" | "LIST";
 // --- Ring Info Card (NEW: Used ONLY for the 3D Ring View) ---
 
 const RingInfoCard: React.FC<{ project: Project }> = ({ project }) => (
-  <Card
-    className="glass-effect border-accent/20 overflow-hidden transition-all duration-500 hover:glow-effect h-full flex flex-col backdrop-blur-sm"
+  <GlareHover
+    width="100%"
+    height="auto"
+    background="transparent"
+    borderRadius="12px"
+    borderColor="transparent"
+    glareColor="#ffffff"
+    glareOpacity={0.2}
+    glareSize={200}
+    transitionDuration={500}
+    className="block"
   >
-    <div className="p-6 flex flex-col flex-grow">
-      {/* NO IMAGE SECTION HERE */}
-      <h3 className="text-3xl font-heading font-bold mb-4 gradient-text">
-        {project.title}
-      </h3>
-      <p className="text-muted-foreground mb-6 text-base flex-grow">
-        {project.description}
-      </p>
-      <div className="flex flex-wrap gap-2 mb-6 mt-auto">
-        {project.tags.map((tag, tagIndex) => (
-          <Badge
-            key={tagIndex}
-            className="text-sm px-3 py-1 bg-primary-foreground/10 border border-primary-foreground/30 font-medium text-primary-foreground" 
+    <Card
+      className="glass-effect border-accent/20 overflow-hidden transition-all duration-500 hover:glow-effect h-full flex flex-col backdrop-blur-sm"
+    >
+      <div className="p-6 flex flex-col flex-grow">
+        {/* NO IMAGE SECTION HERE */}
+        <h3 className="text-3xl font-heading font-bold mb-4 gradient-text">
+          {project.title}
+        </h3>
+        <p className="text-muted-foreground mb-6 text-base flex-grow">
+          {project.description}
+        </p>
+        <div className="flex flex-wrap gap-2 mb-6 mt-auto">
+          {project.tags.map((tag, tagIndex) => (
+            <Badge
+              key={tagIndex}
+              className="text-sm px-3 py-1 bg-primary-foreground/10 border border-primary-foreground/30 font-medium text-primary-foreground" 
+            >
+              {tag}
+            </Badge>
+          ))}
+        </div>
+        <div className="flex gap-4 mt-auto"> 
+          <Button
+            size="lg" 
+            className="flex-1 bg-accent hover:bg-accent/80 text-primary-foreground transition-colors"
+            onClick={() => window.open(project.demo, '_blank')}
           >
-            {tag}
-          </Badge>
-        ))}
+            <ExternalLink className="w-5 h-5 mr-2" />
+            View Demo
+          </Button>
+          <Button
+            size="lg" 
+            variant="outline"
+            className="flex-1 border-accent/50 hover:bg-accent/20"
+            onClick={() => window.open(project.link, '_blank')}
+          >
+            <Github className="w-5 h-5 mr-2" />
+            Code
+          </Button>
+        </div>
       </div>
-      <div className="flex gap-4 mt-auto"> 
-        <Button
-          size="lg" 
-          className="flex-1 bg-accent hover:bg-accent/80 text-primary-foreground transition-colors"
-          onClick={() => window.open(project.demo, '_blank')}
-        >
-          <ExternalLink className="w-5 h-5 mr-2" />
-          View Demo
-        </Button>
-        <Button
-          size="lg" 
-          variant="outline"
-          className="flex-1 border-accent/50 hover:bg-accent/20"
-          onClick={() => window.open(project.link, '_blank')}
-        >
-          <Github className="w-5 h-5 mr-2" />
-          Code
-        </Button>
-      </div>
-    </div>
-  </Card>
+    </Card>
+  </GlareHover>
 );
 
 
 // --- Project Details Card (Used for Grid View - Image KEPT) ---
 
 const ProjectDetailsCard: React.FC<{ project: Project }> = ({ project }) => (
-  <Card
-    className="glass-effect border-accent/20 overflow-hidden transition-all duration-500 hover:glow-effect h-full flex flex-col backdrop-blur-sm"
+  <GlareHover
+    width="100%"
+    height="auto"
+    background="transparent"
+    borderRadius="12px"
+    borderColor="transparent"
+    glareColor="#ffffff"
+    glareOpacity={0.2}
+    glareSize={200}
+    transitionDuration={500}
+    className="block"
   >
-    {/* Image Section (KEPT for Grid) */}
-    <div className="relative h-48 w-full overflow-hidden">
-        <img
-            src={project.image}
-            alt={`${project.title} screenshot`}
-            className="w-full h-full object-cover transition-transform duration-500 hover:scale-[1.05]"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent"></div>
-    </div>
-    
-    <div className="p-6 flex flex-col flex-grow">
-      <h3 className="text-2xl font-heading font-bold mb-2 gradient-text">
-        {project.title}
-      </h3>
-      <p className="text-muted-foreground mb-4 text-sm flex-grow">
-        {project.description}
-      </p>
-      <div className="flex flex-wrap gap-2 mb-6 mt-auto">
-        {project.tags.map((tag, tagIndex) => (
-          <Badge
-            key={tagIndex}
-            className="text-xs px-2 py-0.5 bg-primary-foreground/10 border border-primary-foreground/30 font-medium text-primary-foreground" 
+    <Card
+      className="glass-effect border-accent/20 overflow-hidden transition-all duration-500 hover:glow-effect h-full flex flex-col backdrop-blur-sm"
+    >
+      {/* Image Section (KEPT for Grid) */}
+      <div className="relative h-48 w-full overflow-hidden">
+          <img
+              src={project.image}
+              alt={`${project.title} screenshot`}
+              className="w-full h-full object-cover transition-transform duration-500 hover:scale-[1.05]"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent"></div>
+      </div>
+      
+      <div className="p-6 flex flex-col flex-grow">
+        <h3 className="text-2xl font-heading font-bold mb-2 gradient-text">
+          {project.title}
+        </h3>
+        <p className="text-muted-foreground mb-4 text-sm flex-grow">
+          {project.description}
+        </p>
+        <div className="flex flex-wrap gap-2 mb-6 mt-auto">
+          {project.tags.map((tag, tagIndex) => (
+            <Badge
+              key={tagIndex}
+              className="text-xs px-2 py-0.5 bg-primary-foreground/10 border border-primary-foreground/30 font-medium text-primary-foreground" 
+            >
+              {tag}
+            </Badge>
+          ))}
+        </div>
+        <div className="flex gap-3 mt-auto"> 
+          <Button
+            size="sm" 
+            className="flex-1 bg-accent hover:bg-accent/80 text-primary-foreground transition-colors"
+            onClick={() => window.open(project.demo, '_blank')}
           >
-            {tag}
-          </Badge>
-        ))}
+            <ExternalLink className="w-4 h-4 mr-2" />
+            Demo
+          </Button>
+          <Button
+            size="sm" 
+            variant="outline"
+            className="flex-1 border-accent/50 hover:bg-accent/20"
+            onClick={() => window.open(project.link, '_blank')}
+          >
+            <Github className="w-4 h-4 mr-2" />
+            Code
+          </Button>
+        </div>
       </div>
-      <div className="flex gap-3 mt-auto"> 
-        <Button
-          size="sm" 
-          className="flex-1 bg-accent hover:bg-accent/80 text-primary-foreground transition-colors"
-          onClick={() => window.open(project.demo, '_blank')}
-        >
-          <ExternalLink className="w-4 h-4 mr-2" />
-          Demo
-        </Button>
-        <Button
-          size="sm" 
-          variant="outline"
-          className="flex-1 border-accent/50 hover:bg-accent/20"
-          onClick={() => window.open(project.link, '_blank')}
-        >
-          <Github className="w-4 h-4 mr-2" />
-          Code
-        </Button>
-      </div>
-    </div>
-  </Card>
+    </Card>
+  </GlareHover>
 );
 
 // --- Project List Item (Used for List View - Image KEPT) ---
 
 const ProjectListItem: React.FC<{ project: Project }> = ({ project }) => (
-    <Card className="glass-effect border-accent/20 p-4 flex flex-col sm:flex-row gap-4 items-center transition-all duration-300 hover:border-accent/50 hover:shadow-xl bg-background/50 backdrop-blur-md">
-        
-        {/* Compact Image (KEPT for List) */}
-        <div className="w-full sm:w-40 h-24 overflow-hidden rounded-lg flex-shrink-0 border border-accent/30">
-            <img
-                src={project.image}
-                alt={`${project.title} thumbnail`}
-                className="w-full h-full object-cover"
-            />
-        </div>
-        
-        <div className="sm:w-3/5 w-full">
-            <h3 className="text-xl font-heading font-bold mb-1">
-                <a href={project.demo} target="_blank" rel="noopener noreferrer" className="gradient-text hover:underline">
-                    {project.title}
-                </a>
-            </h3>
-            <p className="text-muted-foreground text-sm mb-3 line-clamp-2">{project.description}</p>
-            <div className="flex flex-wrap gap-2">
-                {project.tags.slice(0, 3).map((tag, tagIndex) => ( 
-                    <Badge key={tagIndex} className="text-xs bg-accent/20 border border-accent/50 text-accent-foreground">
-                        {tag}
-                    </Badge>
-                ))}
-            </div>
-        </div>
-        
-        <div className="sm:w-1/5 w-full flex flex-row sm:flex-col gap-2 justify-end sm:items-end">
-            <Button
-                size="sm" 
-                className="w-1/2 sm:w-auto bg-primary hover:bg-primary/80"
-                onClick={() => window.open(project.demo, '_blank')}
-            >
-                <Zap className="w-3 h-3 mr-1 sm:mr-2" />
-                Demo
-            </Button>
-            <Button
-                size="sm" 
-                variant="outline"
-                className="w-1/2 sm:w-auto border-muted-foreground/50 hover:bg-muted-foreground/10"
-                onClick={() => window.open(project.link, '_blank')}
-            >
-                <Github className="w-3 h-3 mr-1 sm:mr-2" />
-                Code
-            </Button>
-        </div>
-    </Card>
+    <GlareHover
+      width="100%"
+      height="auto"
+      background="transparent"
+      borderRadius="12px"
+      borderColor="transparent"
+      glareColor="#ffffff"
+      glareOpacity={0.2}
+      glareSize={200}
+      transitionDuration={500}
+      className="block"
+    >
+      <Card className="glass-effect border-accent/20 p-4 flex flex-col sm:flex-row gap-4 items-center transition-all duration-300 hover:border-accent/50 hover:shadow-xl bg-background/50 backdrop-blur-md">
+          
+          {/* Compact Image (KEPT for List) */}
+          <div className="w-full sm:w-40 h-24 overflow-hidden rounded-lg flex-shrink-0 border border-accent/30">
+              <img
+                  src={project.image}
+                  alt={`${project.title} thumbnail`}
+                  className="w-full h-full object-cover"
+              />
+          </div>
+          
+          <div className="sm:w-3/5 w-full">
+              <h3 className="text-xl font-heading font-bold mb-1">
+                  <a href={project.demo} target="_blank" rel="noopener noreferrer" className="gradient-text hover:underline">
+                      {project.title}
+                  </a>
+              </h3>
+              <p className="text-muted-foreground text-sm mb-3 line-clamp-2">{project.description}</p>
+              <div className="flex flex-wrap gap-2">
+                  {project.tags.slice(0, 3).map((tag, tagIndex) => ( 
+                      <Badge key={tagIndex} className="text-xs bg-accent/20 border border-accent/50 text-accent-foreground">
+                          {tag}
+                      </Badge>
+                  ))}
+              </div>
+          </div>
+          
+          <div className="sm:w-1/5 w-full flex flex-row sm:flex-col gap-2 justify-end sm:items-end">
+              <Button
+                  size="sm" 
+                  className="w-1/2 sm:w-auto bg-primary hover:bg-primary/80"
+                  onClick={() => window.open(project.demo, '_blank')}
+              >
+                  <Zap className="w-3 h-3 mr-1 sm:mr-2" />
+                  Demo
+              </Button>
+              <Button
+                  size="sm" 
+                  variant="outline"
+                  className="w-1/2 sm:w-auto border-muted-foreground/50 hover:bg-muted-foreground/10"
+                  onClick={() => window.open(project.link, '_blank')}
+              >
+                  <Github className="w-3 h-3 mr-1 sm:mr-2" />
+                  Code
+              </Button>
+          </div>
+      </Card>
+    </GlareHover>
 );
 
 // --- Project Grid View Component (NO CHANGE) ---
