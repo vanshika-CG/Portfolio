@@ -9,6 +9,7 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 // ⭐️ IMPORT THE NEW PROVIDER
 import { LenisProvider } from "@/context/LenisContext"; 
+import CertificationsPage from './pages//Certifications';
 
 const queryClient = new QueryClient();
 
@@ -23,11 +24,13 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="*" element={<NotFound />} />
+            <Route path="/certifications" element={<CertificationsPage />} />
           </Routes>
         </BrowserRouter>
       </LenisProvider> 
     </TooltipProvider>
   </QueryClientProvider>
+  
 );
 
 export default App;

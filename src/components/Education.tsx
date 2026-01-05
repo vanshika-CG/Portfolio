@@ -1,5 +1,4 @@
 import { GraduationCap, Award } from 'lucide-react';
-// 1. Import the LightRays component (assuming LightRays.tsx is in the same directory or a common components folder)
 import LightRays from './LightRays'; // Adjust path as necessary
 
 const Education = () => {
@@ -35,30 +34,25 @@ const Education = () => {
   ];
 
   return (
-    // The section now serves as the container for the light rays, it must be 'relative'
     <section id="education" className="py-24 px-4 relative min-h-[800px] overflow-hidden"> 
       
-      {/* 4. Place the LightRays component as the background. */}
-      {/* It uses absolute positioning to fill the container and a low z-index to stay behind content. */}
-      {/* 5. Configure props for a subtle, mouse-following background effect. */}
       <div className="absolute inset-0 z-0">
         <LightRays 
           raysOrigin="top-center"
-          raysColor="#8be9fd" // A light blue/cyan color for a tech/nebula feel
+          raysColor="#8be9fd"
           raysSpeed={0.5} 
           lightSpread={0.8} 
           rayLength={3.0}
           pulsating={true}
           fadeDistance={0.5}
           saturation={1.0}
-          followMouse={true} // Enable mouse following
-          mouseInfluence={0.05} // Subtle influence for a highlight feel
-          noiseAmount={0.05} // Small amount of noise for texture
-          className="opacity-100" // Control overall visibility/intensity with opacity
+          followMouse={true}
+          mouseInfluence={0.05}
+          noiseAmount={0.05}
+          className="opacity-100"
         />
       </div>
       
-      {/* The main content div needs a higher z-index to sit above the light rays */}
       <div className="max-w-6xl mx-auto relative z-10">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-heading font-bold mb-4">
@@ -118,11 +112,20 @@ const Education = () => {
                         {cert.name}
                         {cert.code && <span className="text-accent ml-2">({cert.code})</span>}
                       </h4>
-                      <p className="text-muted-foreground text-sm">{cert.issuer}</p>
+                      <p className="text-muted-foreground text-sm">{cert.issuer}</p> 
                     </div>
                   </div>
                 </div>
               ))}
+            </div>
+
+            {/* View More Certificates Button */}
+            <div className="mt-8 text-center">
+              <a href="/certifications">
+                <button className="inline-flex items-center gap-2 px-7 py-3 rounded-xl glass-effect hover:glow-effect transition-all duration-300 font-medium text-foreground hover:scale-105 shadow-lg">
+                  View More Certificates →
+                </button>
+              </a>
             </div>
           </div>
         </div>
