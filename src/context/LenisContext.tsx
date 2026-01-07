@@ -1,46 +1,28 @@
 // src/context/LenisContext.tsx
-
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import Lenis from '@studio-freight/lenis';
+import Lenis from 'lenis'; // Updated official import
 
-// Define the type for the context value
 type LenisContextType = Lenis | null;
-
-// Create the Context
 const LenisContext = createContext<LenisContextType>(null);
 
-// Custom hook to use the shared Lenis instance
-export const useLenisContext = () => {
-  return useContext(LenisContext);
-};
+export const useLenisContext = () => useContext(LenisContext);
 
-// Provider component
-interface LenisProviderProps {
-  children: ReactNode;
-}
-
-export const LenisProvider: React.FC<LenisProviderProps> = ({ children }) => {
+export const LenisProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [lenisInstance, setLenisInstance] = useState<Lenis | null>(null);
 
   useEffect(() => {
-    // ⭐️ Only create the Lenis instance once here
     const lenis = new Lenis({
-      duration: 1.5,
-      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      orientation: 'vertical',
-      smoothWheel: true,
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      lerp: 0.1, // Smooth linear interpolation
       wheelMultiplier: 1,
-      touchMultiplier: 2,
-      infinite: false,
+      touchMultiplier: 1.5,
     });
 
     setLenisInstance(lenis);
 
     function raf(time: number) {
-      // Check for existence before calling raf
-      if (lenis) { 
-        lenis.raf(time);
-      }
+      lenis.raf(time);
       requestAnimationFrame(raf);
     }
 
@@ -50,7 +32,7 @@ export const LenisProvider: React.FC<LenisProviderProps> = ({ children }) => {
       cancelAnimationFrame(rafId);
       lenis.destroy();
     };
-  }, []); // Empty dependency array ensures run only on mount
+  }, []);
 
   return (
     <LenisContext.Provider value={lenisInstance}>

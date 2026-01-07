@@ -1,3 +1,4 @@
+// src/Orb.tsx
 import { useEffect, useRef, useState } from 'react';
 import { Renderer, Program, Mesh, Triangle, Vec3 } from 'ogl';
 
@@ -19,11 +20,11 @@ export default function Orb({
   const ctnDom = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
 
-  // 1. Intersection Observer to detect visibility
+  // Stop rendering when the orb is not visible
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => setIsVisible(entry.isIntersecting),
-      { threshold: 0.05 }
+      { threshold: 0.01 }
     );
     if (ctnDom.current) observer.observe(ctnDom.current);
     return () => observer.disconnect();
@@ -175,29 +176,40 @@ export default function Orb({
 
     const mesh = new Mesh(gl, { geometry, program });
 
+    // Optimization: Cap DPR at 1.5 to prevent GPU bottleneck on mobile
     function resize() {
       if (!container) return;
-      // ⭐️ OPTIMIZATION: Cap DPR at 2.0 to prevent performance drop on high-res mobile screens
-      const dpr = Math.min(window.devicePixelRatio || 1, 2.0); 
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5); 
       const width = container.clientWidth;
       const height = container.clientHeight;
       renderer.setSize(width * dpr, height * dpr);
-      gl.canvas.style.width = width + 'px';
-      gl.canvas.style.height = height + 'px';
+      gl.canvas.style.width = '100%';
+      gl.canvas.style.height = '100%';
       program.uniforms.iResolution.value.set(gl.canvas.width, gl.canvas.height, gl.canvas.width / gl.canvas.height);
     }
 
-    window.addEventListener('resize', resize);
+    let resizeTimeout: any;
+    const handleResize = () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(resize, 200);
+    };
+
+    window.addEventListener('resize', handleResize);
     resize();
 
     let targetHover = 0, currentRot = 0, lastTime = 0, rafId: number;
 
     const update = (t: number) => {
       rafId = requestAnimationFrame(update);
-      // ⭐️ OPTIMIZATION: Stop all calculations if the orb is off-screen
+      
+      // Stop rendering if the orb is off-screen
       if (!isVisible) return; 
 
       const dt = (t - lastTime) * 0.001;
+      
+      // Frame Limiter: Skip frames to maintain ~60fps background smoothness
+      if (dt < 0.015) return; 
+
       lastTime = t;
       program.uniforms.iTime.value = t * 0.001;
       program.uniforms.hue.value = hue;
@@ -222,12 +234,12 @@ export default function Orb({
 
     return () => {
       cancelAnimationFrame(rafId);
-      window.removeEventListener('resize', resize);
+      window.removeEventListener('resize', handleResize);
       container.removeEventListener('mousemove', handleMouseMove);
-      container.removeChild(gl.canvas);
+      if (container.contains(gl.canvas)) container.removeChild(gl.canvas);
       gl.getExtension('WEBGL_lose_context')?.loseContext();
     };
   }, [hue, hoverIntensity, rotateOnHover, forceHoverState, isVisible]);
 
-  return <div ref={ctnDom} className={`w-full h-full ${className}`} />;
+  return <div ref={ctnDom} className={`w-full h-full pointer-events-none ${className}`} />;
 }
