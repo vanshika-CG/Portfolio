@@ -1,19 +1,20 @@
 // src/components/Navigation.tsx
 import { useState, useEffect, useRef } from "react";
+import { Link, useLocation } from "react-router-dom"; // Import Link and useLocation
 import { Button } from "@/components/ui/button";
 import {
   Menu, X, User2, Github, Linkedin, Twitter, Youtube,
   Mail, FileText, Code
 } from "lucide-react";
 import { useLenis } from "@/hooks/useLenis";
-import { useTheme } from "@/context/ThemeContext"; // ADD
+import { useTheme } from "@/context/ThemeContext";
 
 const navItems = ["about", "projects", "education", "contact"] as const;
 
 const profileData = {
-  name: "Your Name",
+  name: "Vanshika Jangam",
   email: "your.email@example.com",
-  photoUrl: "/images/profile-placeholder.jpg",
+  photoUrl: "/me.jpg",
   socials: [
     { name: "LinkedIn", icon: Linkedin, url: "https://linkedin.com/in/yourprofile" },
     { name: "GitHub", icon: Github, url: "https://github.com/yourusername" },
@@ -38,12 +39,19 @@ const Navigation = () => {
   });
 
   const lenis = useLenis();
-  const { theme, setTheme } = useTheme(); // ADD
+  const { theme, setTheme } = useTheme();
+  
+  // Track current route to highlight "Certifications" correctly
+  const location = useLocation();
+  const isCertPage = location.pathname === "/certifications";
 
-  // Scroll handler
+  // Scroll handler for home page sections
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
+
+      // Don't update active scroll section if on the certifications page
+      if (isCertPage) return;
 
       let currentActive = navItems[0];
       let hasFound = false;
@@ -70,11 +78,14 @@ const Navigation = () => {
     window.addEventListener("scroll", handleScroll);
     handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [isCertPage]);
 
-  // Indicator glow
+  // Indicator glow logic for desktop nav
   useEffect(() => {
-    if (!navRef.current) return;
+    if (!navRef.current || isCertPage) {
+      setIndicatorStyle(prev => ({ ...prev, opacity: 0 }));
+      return;
+    }
 
     const activeElement = navRef.current.querySelector(
       `.nav-link-${activeItem}`
@@ -86,37 +97,15 @@ const Navigation = () => {
         left: activeElement.offsetLeft,
         opacity: 1,
       });
-    } else {
-      setIndicatorStyle(prev => ({ ...prev, opacity: 0 }));
     }
-  }, [activeItem, isScrolled]);
+  }, [activeItem, isScrolled, isCertPage]);
 
-  // Lock Lenis when overlays open
+  // Lock Lenis scroll when overlays are open
   useEffect(() => {
     const isOverlayOpen = isMobileMenuOpen || isProfileSliderOpen;
 
     if (isOverlayOpen && lenis) {
       lenis.stop();
-
-      const sliderElement = sliderRef.current;
-      if (sliderElement) {
-        const preventScrollProp = (e: WheelEvent) => {
-          const isAtTop = sliderElement.scrollTop === 0 && e.deltaY < 0;
-          const isAtBottom =
-            sliderElement.scrollHeight - sliderElement.clientHeight <=
-              sliderElement.scrollTop + 1 && e.deltaY > 0;
-
-          if (!isAtTop && !isAtBottom) {
-            e.stopPropagation();
-          }
-        };
-
-        sliderElement.addEventListener("wheel", preventScrollProp, { passive: false });
-        return () => {
-          sliderElement.removeEventListener("wheel", preventScrollProp);
-          if (lenis) lenis.start();
-        };
-      }
     } else if (lenis) {
       lenis.start();
     }
@@ -151,15 +140,18 @@ const Navigation = () => {
         } ${isMobileMenuOpen ? "bg-background" : ""}`}
       >
         <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-          <button
-            onClick={() => lenis ? lenis.scrollTo(0) : window.scrollTo({ top: 0, behavior: "smooth" })}
+          <Link
+            to="/"
+            onClick={() => !isCertPage && (lenis ? lenis.scrollTo(0) : window.scrollTo({ top: 0, behavior: "smooth" }))}
             className="text-2xl font-heading font-extrabold gradient-text z-50 transition-all hover:scale-105"
           >
             VJ
-          </button>
+          </Link>
 
+          {/* Desktop Navigation */}
           <div ref={navRef} className="hidden md:flex items-center gap-10 relative h-7">
-            {navItems.map((item) => (
+            {/* Home section links - Only show on home page */}
+            {!isCertPage && navItems.map((item) => (
               <button
                 key={item}
                 onClick={() => scrollToSection(item)}
@@ -172,6 +164,19 @@ const Navigation = () => {
                 {item}
               </button>
             ))}
+
+            {/* Certifications Route Link */}
+            <Link
+              to="/certifications"
+              className={`capitalize text-xl font-medium relative z-10 transition-colors ${
+                isCertPage
+                  ? "text-lavender font-semibold"
+                  : "text-muted-foreground hover:text-accent"
+              }`}
+            >
+              Certifications
+            </Link>
+
             <div
               className="nav-indicator-glow"
               style={{
@@ -216,7 +221,7 @@ const Navigation = () => {
         <div className="fixed inset-0 z-40 md:hidden pt-20">
           <div className="absolute inset-0 bg-background/95 backdrop-blur-lg">
             <div className="flex flex-col items-center pt-16 h-full gap-8">
-              {navItems.map((item) => (
+              {!isCertPage && navItems.map((item) => (
                 <button
                   key={item}
                   onClick={() => scrollToSection(item)}
@@ -227,6 +232,16 @@ const Navigation = () => {
                   {item}
                 </button>
               ))}
+              
+              <Link
+                to="/certifications"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={`capitalize text-3xl font-heading font-bold transition-all ${
+                  isCertPage ? "gradient-text" : "text-foreground hover:gradient-text"
+                }`}
+              >
+                Certifications
+              </Link>
             </div>
           </div>
         </div>
@@ -241,7 +256,7 @@ const Navigation = () => {
       >
         <div
           ref={sliderRef}
-          className={`absolute top-0 right-0 h-full w-full max-w-sm transition-transform duration-500 ease-in-out ${
+          className={`absolute top-0 right-0 h-full w-full max-sm:max-w-xs max-w-sm transition-transform duration-500 ease-in-out ${
             isProfileSliderOpen ? "translate-x-0" : "translate-x-full"
           } glass-effect-dark p-6 shadow-2xl backdrop-blur-3xl overflow-y-auto`}
           onClick={(e) => e.stopPropagation()}
@@ -251,12 +266,10 @@ const Navigation = () => {
             size="icon"
             className="absolute top-4 right-4 text-white hover:text-accent z-50"
             onClick={toggleProfileSlider}
-            aria-label="Close Profile Slider"
           >
             <X className="h-7 w-7" />
           </Button>
 
-          {/* Profile Header */}
           <div className="flex flex-col items-center pt-10 pb-8 border-b border-white/20">
             <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-lavender shadow-xl p-0.5 bg-background/50">
               <img
@@ -268,10 +281,9 @@ const Navigation = () => {
             <h3 className="text-3xl font-heading font-bold mt-4 gradient-text">
               {profileData.name}
             </h3>
-            <p className="text-sm text-gray-300 mt-1">Full Stack Developer | UI/UX Enthusiast</p>
+            <p className="text-sm text-gray-300 mt-1 text-center">Full Stack Developer | UI/UX Enthusiast</p>
           </div>
 
-          {/* Socials */}
           <div className="py-6 border-b border-white/20">
             <h4 className="text-lg font-semibold text-lavender mb-3">Connect with Me:</h4>
             <div className="grid grid-cols-2 gap-3">
@@ -290,10 +302,8 @@ const Navigation = () => {
             </div>
           </div>
 
-          {/* Quick Actions + Theme Picker */}
           <div className="pt-6">
             <h4 className="text-lg font-semibold text-lavender mb-3">Quick Actions:</h4>
-
             <a
               href={`mailto:${profileData.email}`}
               className="flex items-center p-3 rounded-xl bg-green-600/90 hover:bg-green-600 transition-colors duration-300 text-white font-bold justify-center shadow-lg mb-4"
@@ -302,7 +312,7 @@ const Navigation = () => {
               Email Me Directly
             </a>
 
-            <div className="flex justify-between gap-4 mb-6">
+            <div className="flex flex-col sm:flex-row justify-between gap-4 mb-6">
               <Button className="w-full bg-blue-500/80 hover:bg-blue-600 transition-all duration-300 text-white font-bold shadow-md">
                 <FileText className="h-5 w-5 mr-2" />
                 Download CV
@@ -313,29 +323,27 @@ const Navigation = () => {
               </Button>
             </div>
 
-            {/* THEME PICKER */}
-         // Inside the Theme Picker section
-<h4 className="text-lg font-semibold text-lavender mb-3">Choose Site Theme</h4>
-<div className="grid grid-cols-2 gap-3">
-  {(["light", "dark", "ocean", "sunset"] as const).map((t) => (
-    <button
-      key={t}
-      onClick={() => setTheme(t)}
-      className={`
-        capitalize p-3 rounded-xl transition-all font-medium
-        ${theme === t
-          ? "bg-lavender/30 ring-2 ring-lavender text-white"
-          : "bg-white/10 hover:bg-white/20 text-gray-300"
-        }
-      `}
-    >
-      {t}
-    </button>
-  ))}
-</div>
+            <h4 className="text-lg font-semibold text-lavender mb-3">Choose Site Theme</h4>
+            <div className="grid grid-cols-2 gap-3">
+              {(["light", "dark", "ocean", "sunset"] as const).map((t) => (
+                <button
+                  key={t}
+                  onClick={() => setTheme(t)}
+                  className={`
+                    capitalize p-3 rounded-xl transition-all font-medium
+                    ${theme === t
+                      ? "bg-lavender/30 ring-2 ring-lavender text-white"
+                      : "bg-white/10 hover:bg-white/20 text-gray-300"
+                    }
+                  `}
+                >
+                  {t}
+                </button>
+              ))}
+            </div>
 
             <p className="text-xs text-center text-gray-400 mt-10">
-              © {new Date().getFullYear()} {profileData.name}. UI crafted with **React & Tailwind**.
+              © {new Date().getFullYear()} {profileData.name}. UI crafted with React & Tailwind.
             </p>
           </div>
         </div>
