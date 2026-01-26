@@ -246,7 +246,7 @@
       hsl(var(--glow-primary) / 0.1) 100%);
     box-shadow: 0 0 10px hsl(var(--glow-secondary) / 0.8),
                 0 0 20px hsl(var(--glow-secondary) / 0.4);
-    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1), transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     border-radius: 9999px;
   }
 
@@ -256,25 +256,19 @@
   }
 
   .glass-effect {
-    background: hsl(var(--card) / 0.4);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: hsl(var(--card) / 0.95);
     border: 1px solid hsl(var(--border) / 0.3);
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
   }
 
   .glass-effect-dark {
-    background: hsl(var(--card) / 0.6);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    background: hsl(var(--card) / 0.95);
     border: 1px solid hsl(var(--border) / 0.4);
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
   }
 
   .glass-effect-strong {
-    background: hsl(var(--card) / 0.3);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    background: hsl(var(--card) / 0.98);
     border: 1px solid hsl(var(--border) / 0.5);
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
   }
@@ -380,7 +374,7 @@
 
   /* Smooth Transitions */
   .smooth-transition {
-    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   /* Blur on Scroll */
@@ -408,7 +402,6 @@
   }
 
   /* Performance optimizations */
-  section {
-    will-change: transform, opacity;
-  }
+  /* Reduced global will-change to avoid layer explosion */
+
 }

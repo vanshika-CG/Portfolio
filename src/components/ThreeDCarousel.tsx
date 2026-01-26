@@ -129,9 +129,9 @@ export const ThreeDCarousel: React.FC<ThreeDCarouselProps> = ({
 
     return {
       transform: `translateX(${translateX}px) rotateY(${rotateY}deg) scale(${scale})`,
-      filter: `blur(${blur}px)`,
       opacity,
       zIndex,
+      willChange: "transform, opacity",
       pointerEvents: isCenter ? ("auto" as const) : ("none" as const),
     };
   };
@@ -166,7 +166,6 @@ export const ThreeDCarousel: React.FC<ThreeDCarouselProps> = ({
                 initial={false}
                 animate={{
                   transform: style.transform,
-                  filter: style.filter,
                   opacity: style.opacity,
                   zIndex: style.zIndex,
                 }}
@@ -177,9 +176,10 @@ export const ThreeDCarousel: React.FC<ThreeDCarouselProps> = ({
               >
                 <Card
                   className={cn(
-                    "w-[380px] glass-effect border-accent/20 overflow-hidden backdrop-blur-sm transition-all duration-300",
+                    "w-[380px] bg-background/90 border-accent/20 overflow-hidden transition-transform duration-300",
                     isCenter && "shadow-2xl shadow-accent/30 border-accent/40 hover:scale-105"
-                  )}
+                  )
+                }
                 >
                   {/* Project Image */}
                   <div className="relative h-56 w-full overflow-hidden">

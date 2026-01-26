@@ -8,7 +8,6 @@ const Hero = () => {
   const lenis = useLenis();
 
   const scrollToContact = () => {
-    // Scrolls to the contact section with a smooth transition
     lenis?.scrollTo("#contact", { offset: -120, duration: 1.2 });
   };
 
@@ -16,28 +15,19 @@ const Hero = () => {
     <section
       id="hero"
       className="relative min-h-screen flex items-center justify-start overflow-hidden
-                 bg-gradient-to-b
-                 from-background/90   /* top – dark background */
-                 via-primary/30       /* middle – primary tint */
-                 to-background/90"    /* bottom – dark again */
+                 bg-gradient-to-b from-background/90 via-primary/30 to-background/90"
     >
-      {/* ---------------------------------------------------------- */}
-      {/* Profile Image / Bitmoji Optimized for SEO */}
-      {/* ---------------------------------------------------------- */}
       <div className="absolute right-20 top-1/3 -translate-y-1/4">
+        {/* PERFORMANCE FIX: Removed drop-shadow-2xl class */}
         <img 
           src="/bitmoji.png" 
           alt="Vanshika Jangam - UI/UX and Frontend Developer" 
-          className="w-96 h-auto drop-shadow-2xl" 
+          className="w-96 h-auto" 
         />
       </div>
 
-      {/* ---------------------------------------------------------- */}
-      {/* Main Content */}
-      {/* ---------------------------------------------------------- */}
       <div className="relative z-10 max-w-3xl px-4 ml-10 text-left">
         <h1 className="text-4xl md:text-6xl font-bold mb-4">
-          {/* Main Name Heading for Search Engine Crawlers */}
           <span className="block text-foreground">Hi, I'm Vanshika Jangam!</span>
           <span className="block text-lavender">
             I Transform Ideas into Engaging Experiences
@@ -49,7 +39,6 @@ const Hero = () => {
           vision of crafting impactful and user-centric experiences.
         </p>
 
-        {/* CTA Buttons */}
         <div className="flex gap-4">
           <Button
             className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
@@ -57,7 +46,6 @@ const Hero = () => {
           >
             Let's Connect
           </Button>
-
           <Button
             variant="outline"
             className="border-lavender text-lavender hover:bg-lavender/10 font-semibold"
@@ -67,9 +55,6 @@ const Hero = () => {
         </div>
       </div>
 
-      {/* ---------------------------------------------------------- */}
-      {/* Bottom-right “Get in Touch” link */}
-      {/* ---------------------------------------------------------- */}
       <GlareHover
         width="auto"
         height="auto"
@@ -77,8 +62,8 @@ const Hero = () => {
         borderRadius="8px"
         borderColor="transparent"
         glareColor="#ffffff"
-        glareOpacity={0.3}
-        glareSize={200}
+        glareOpacity={0.2} // Optimized opacity
+        glareSize={150}   // Optimized size
         transitionDuration={500}
         className="inline-flex"
       >
