@@ -12,6 +12,7 @@ import ScrollProgressBar from "@/components/ScrollProgressBar";
 import AnimatedSection from "@/components/AnimatedSection";
 // ⭐️ NEW IMPORT
 import ScrollSlideRobot from "@/components/ScrollSlideRobot"; 
+import TechStack from "@/components/TechStack"; 
 
 const Index = () => {
   return (
@@ -30,6 +31,9 @@ const Index = () => {
       </AnimatedSection>
       <AnimatedSection animation="slideInRight" threshold={0.15}>
         <Projects />
+      </AnimatedSection>
+      <AnimatedSection animation="fadeInUp" threshold={0.15}>
+        <TechStack />
       </AnimatedSection>
       <AnimatedSection animation="slideInLeft" threshold={0.15}>
         <Education />
