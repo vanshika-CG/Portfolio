@@ -21,7 +21,7 @@
     /* Deep Purple to Lavender gradient spectrum */
     --primary: 276 71% 33%;
     --primary-foreground: 270 20% 98%;
-    
+
     --secondary: 291 47% 51%;
     --secondary-foreground: 270 20% 98%;
 
@@ -30,7 +30,7 @@
 
     --accent: 282 56% 53%;
     --accent-foreground: 270 20% 98%;
-    
+
     --lavender: 282 45% 88%;
     --lavender-foreground: 276 71% 20%;
 
@@ -47,10 +47,12 @@
     --gradient-start: 276 71% 33%;
     --gradient-middle: 282 56% 53%;
     --gradient-end: 282 45% 88%;
-    
+
     /* Glow effects */
-    --glow-primary: 276 71% 33%;   /* Deep Purple */
-    --glow-secondary: 291 47% 51%; /* Magenta/Pink */
+    --glow-primary: 276 71% 33%;
+    /* Deep Purple */
+    --glow-secondary: 291 47% 51%;
+    /* Magenta/Pink */
   }
 
   /* ============================================================= */
@@ -196,10 +198,16 @@
   }
 
   html {
-    scroll-behavior: auto; /* Let Lenis handle smooth scrolling */
+    scroll-behavior: auto;
+    /* Let Lenis handle smooth scrolling */
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     font-family: 'Space Grotesk', system-ui, sans-serif;
   }
 }
@@ -209,25 +217,26 @@
 /* ============================================================= */
 
 @layer utilities {
+
   /* Nebula Gradients */
   .gradient-nebula {
     background: linear-gradient(135deg,
-      hsl(var(--gradient-start)) 0%,
-      hsl(var(--gradient-middle)) 50%,
-      hsl(var(--gradient-end)) 100%);
+        hsl(var(--gradient-start)) 0%,
+        hsl(var(--gradient-middle)) 50%,
+        hsl(var(--gradient-end)) 100%);
   }
 
   .gradient-nebula-radial {
     background: radial-gradient(circle at 50% 50%,
-      hsl(var(--gradient-start)) 0%,
-      hsl(var(--gradient-middle)) 40%,
-      hsl(var(--background)) 100%);
+        hsl(var(--gradient-start)) 0%,
+        hsl(var(--gradient-middle)) 40%,
+        hsl(var(--background)) 100%);
   }
 
   .gradient-text {
     background: linear-gradient(135deg,
-      hsl(var(--gradient-middle)) 0%,
-      hsl(var(--gradient-end)) 100%);
+        hsl(var(--gradient-middle)) 0%,
+        hsl(var(--gradient-end)) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -239,20 +248,20 @@
     bottom: -6px;
     height: 3px;
     background: linear-gradient(90deg,
-      hsl(var(--glow-primary) / 0.1) 0%,
-      hsl(var(--glow-secondary)) 25%,
-      hsl(var(--lavender)) 50%,
-      hsl(var(--glow-secondary)) 75%,
-      hsl(var(--glow-primary) / 0.1) 100%);
+        hsl(var(--glow-primary) / 0.1) 0%,
+        hsl(var(--glow-secondary)) 25%,
+        hsl(var(--lavender)) 50%,
+        hsl(var(--glow-secondary)) 75%,
+        hsl(var(--glow-primary) / 0.1) 100%);
     box-shadow: 0 0 10px hsl(var(--glow-secondary) / 0.8),
-                0 0 20px hsl(var(--glow-secondary) / 0.4);
+      0 0 20px hsl(var(--glow-secondary) / 0.4);
     transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1), transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     border-radius: 9999px;
   }
 
   .glow-effect {
     box-shadow: 0 0 20px hsl(var(--glow-primary) / 0.3),
-                0 0 40px hsl(var(--glow-secondary) / 0.2);
+      0 0 40px hsl(var(--glow-secondary) / 0.2);
   }
 
   .glass-effect {
@@ -275,18 +284,39 @@
 
   /* Animations */
   @keyframes gradient-shift {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
+
+    0%,
+    100% {
+      background-position: 0% 50%;
+    }
+
+    50% {
+      background-position: 100% 50%;
+    }
   }
 
   @keyframes pulse-glow {
-    0%, 100% { box-shadow: 0 0 20px hsl(var(--glow-primary) / 0.3); }
-    50% { box-shadow: 0 0 40px hsl(var(--glow-primary) / 0.6), 0 0 60px hsl(var(--glow-secondary) / 0.4); }
+
+    0%,
+    100% {
+      box-shadow: 0 0 20px hsl(var(--glow-primary) / 0.3);
+    }
+
+    50% {
+      box-shadow: 0 0 40px hsl(var(--glow-primary) / 0.6), 0 0 60px hsl(var(--glow-secondary) / 0.4);
+    }
   }
 
   @keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-20px); }
+
+    0%,
+    100% {
+      transform: translateY(0px);
+    }
+
+    50% {
+      transform: translateY(-20px);
+    }
   }
 
   .animate-gradient {
@@ -308,6 +338,7 @@
       opacity: 0;
       transform: translateY(30px);
     }
+
     to {
       opacity: 1;
       transform: translateY(0);
@@ -319,6 +350,7 @@
       opacity: 0;
       transform: scale(0.95);
     }
+
     to {
       opacity: 1;
       transform: scale(1);
@@ -330,6 +362,7 @@
       opacity: 0;
       transform: translateX(-50px);
     }
+
     to {
       opacity: 1;
       transform: translateX(0);
@@ -341,6 +374,7 @@
       opacity: 0;
       transform: translateX(50px);
     }
+
     to {
       opacity: 1;
       transform: translateX(0);

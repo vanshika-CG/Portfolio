@@ -40,7 +40,7 @@ const Navigation = () => {
 
   const lenis = useLenis();
   const { theme, setTheme } = useTheme();
-  
+
   // Track current route to highlight "Certifications" correctly
   const location = useLocation();
   const isCertPage = location.pathname === "/certifications";
@@ -135,9 +135,8 @@ const Navigation = () => {
     <>
       {/* NAV */}
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled ? "glass-effect border-b border-accent/20" : "bg-transparent"
-        } ${isMobileMenuOpen ? "bg-background" : ""}`}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? "glass-effect border-b border-accent/20" : "bg-transparent"
+          } ${isMobileMenuOpen ? "bg-background" : ""}`}
       >
         <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
           <Link
@@ -155,11 +154,10 @@ const Navigation = () => {
               <button
                 key={item}
                 onClick={() => scrollToSection(item)}
-                className={`capitalize text-xl font-medium relative z-10 transition-colors nav-link-${item} ${
-                  activeItem === item
+                className={`capitalize text-xl font-medium relative z-10 transition-colors nav-link-${item} ${activeItem === item
                     ? "text-lavender font-semibold"
                     : "text-muted-foreground hover:text-accent"
-                }`}
+                  }`}
               >
                 {item}
               </button>
@@ -168,11 +166,10 @@ const Navigation = () => {
             {/* Certifications Route Link */}
             <Link
               to="/certifications"
-              className={`capitalize text-xl font-medium relative z-10 transition-colors ${
-                isCertPage
+              className={`capitalize text-xl font-medium relative z-10 transition-colors ${isCertPage
                   ? "text-lavender font-semibold"
                   : "text-muted-foreground hover:text-accent"
-              }`}
+                }`}
             >
               Certifications
             </Link>
@@ -191,9 +188,8 @@ const Navigation = () => {
             <Button
               variant="ghost"
               size="icon"
-              className={`text-foreground hover:text-lavender transition-all duration-300 z-50 ${
-                isProfileSliderOpen ? "gradient-text" : ""
-              }`}
+              className={`text-foreground hover:text-lavender transition-all duration-300 z-50 ${isProfileSliderOpen ? "gradient-text" : ""
+                }`}
               onClick={toggleProfileSlider}
               aria-label="Toggle Profile Slider"
             >
@@ -225,20 +221,18 @@ const Navigation = () => {
                 <button
                   key={item}
                   onClick={() => scrollToSection(item)}
-                  className={`capitalize text-3xl font-heading font-bold transition-all ${
-                    activeItem === item ? "gradient-text" : "text-foreground hover:gradient-text"
-                  }`}
+                  className={`capitalize text-3xl font-heading font-bold transition-all ${activeItem === item ? "gradient-text" : "text-foreground hover:gradient-text"
+                    }`}
                 >
                   {item}
                 </button>
               ))}
-              
+
               <Link
                 to="/certifications"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className={`capitalize text-3xl font-heading font-bold transition-all ${
-                  isCertPage ? "gradient-text" : "text-foreground hover:gradient-text"
-                }`}
+                className={`capitalize text-3xl font-heading font-bold transition-all ${isCertPage ? "gradient-text" : "text-foreground hover:gradient-text"
+                  }`}
               >
                 Certifications
               </Link>
@@ -249,16 +243,14 @@ const Navigation = () => {
 
       {/* PROFILE SLIDER */}
       <div
-        className={`fixed inset-0 z-[60] transition-all duration-500 ease-in-out ${
-          isProfileSliderOpen ? "visible bg-black/50" : "invisible"
-        }`}
+        className={`fixed inset-0 z-[60] transition-all duration-500 ease-in-out ${isProfileSliderOpen ? "visible bg-black/50" : "invisible"
+          }`}
         onClick={toggleProfileSlider}
       >
         <div
           ref={sliderRef}
-          className={`absolute top-0 right-0 h-full w-full max-sm:max-w-xs max-w-sm transition-transform duration-500 ease-in-out ${
-            isProfileSliderOpen ? "translate-x-0" : "translate-x-full"
-          } glass-effect-dark p-6 shadow-2xl backdrop-blur-3xl overflow-y-auto`}
+          className={`absolute top-0 right-0 h-full w-full max-sm:max-w-xs max-w-sm transition-transform duration-500 ease-in-out ${isProfileSliderOpen ? "translate-x-0" : "translate-x-full"
+            } glass-effect-dark p-6 shadow-2xl backdrop-blur-3xl overflow-y-auto`}
           onClick={(e) => e.stopPropagation()}
         >
           <Button

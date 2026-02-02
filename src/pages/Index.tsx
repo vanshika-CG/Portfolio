@@ -13,6 +13,7 @@ import AnimatedSection from "@/components/AnimatedSection";
 // ⭐️ NEW IMPORT
 import ScrollSlideRobot from "@/components/ScrollSlideRobot"; 
 import TechStack from "@/components/TechStack"; 
+import YouTubeSection from "@/components/YouTubeSection"; // Import here
 
 const Index = () => {
   return (
@@ -32,6 +33,10 @@ const Index = () => {
       <AnimatedSection animation="slideInRight" threshold={0.15}>
         <Projects />
       </AnimatedSection>
+      <AnimatedSection animation="slideInRight" threshold={0.15}>
+        <YouTubeSection />
+      </AnimatedSection>
+      
       <AnimatedSection animation="fadeInUp" threshold={0.15}>
         <TechStack />
       </AnimatedSection>
